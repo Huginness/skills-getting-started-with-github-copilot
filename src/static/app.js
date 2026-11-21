@@ -48,7 +48,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
         activityCard.querySelectorAll(".delete-participant").forEach((deleteButton, index) => {
           deleteButton.addEventListener("click", async () => {
+            if (deleteButton.disabled) {
+              return;
+            }
+
             const participant = details.participants[index];
+            deleteButton.disabled = true;
 
             try {
               const response = await fetch(
@@ -73,6 +78,8 @@ document.addEventListener("DOMContentLoaded", () => {
               messageDiv.className = "error";
               messageDiv.classList.remove("hidden");
               console.error("Error unregistering participant:", error);
+            } finally {
+              deleteButton.disabled = false;
             }
           });
         });
